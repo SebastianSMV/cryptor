@@ -1,0 +1,8 @@
+[package]
+name = "cryptor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+encryptor = { path = "./encryptor"}
+decryptor = { path = "./decryptor"}
