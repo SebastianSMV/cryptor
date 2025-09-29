@@ -1,3 +1,5 @@
+use colored::Colorize;
+
 pub fn encrypt(value: &str, seed: usize) -> String{
     let base: Vec<char> = vec![
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
@@ -6,6 +8,15 @@ pub fn encrypt(value: &str, seed: usize) -> String{
     'T', 'U', 'V', 'W','X', 'Y', 'Z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '!','?','-','_','*','=',' ','.',',','+','<','>','\\','/','|','\'','(',')','{','}','[',']']; 
+
+    for c in seed.to_string().chars(){
+        if c == '0'{
+            println!("{}","Warning, 0 detected. Using too many 0's could cause unwanted patterns that expose the original input.".yellow());
+        }
+    }
+    if seed.to_string().len() < 5{
+        println!("{}","Critical, extremely short seed detected. Please input a longer string to make the encryption process more secure.".red());
+    }
 
     let mut base_encrypted = base.clone();
     let seed_sum = sum_number(seed);

@@ -3,8 +3,9 @@ use decryptor;
 
 fn main() {
     let input: String = String::from("Simple encryption program!");
-    let enc = encryptor::encrypt(&input, 92871227);
-    println!("Input: {}\n",input);
+    let seed: usize = 123456789;
+    let enc = encryptor::encrypt(&input, seed);
     println!("Input encoded: {}\n",&enc);
-    println!("Decrypted value: {}",decryptor::decrypt(&enc, 92871227));
+    let decrypted_value_1 = decryptor::decrypt(&enc, seed);
+    println!("Decrypted value: {}",decrypted_value_1);
 }
