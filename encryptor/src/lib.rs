@@ -1,6 +1,7 @@
 use colored::Colorize;
 
 pub fn encrypt(value: &str, seed: usize) -> String{
+    // Base is the alphabet the user can use when encrypting
     let base: Vec<char> = vec![
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
     'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 
@@ -8,7 +9,7 @@ pub fn encrypt(value: &str, seed: usize) -> String{
     'T', 'U', 'V', 'W','X', 'Y', 'Z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '!','?','-','_','*','=',' ','.',',','+','<','>','\\','/','|','\'','(',')','{','}','[',']']; 
-
+    // Safety checks
     for c in seed.to_string().chars(){
         if c == '0'{
             println!("{}","Warning, 0 detected. Using too many 0's could cause unwanted patterns that expose the original input.".yellow());
@@ -17,7 +18,7 @@ pub fn encrypt(value: &str, seed: usize) -> String{
     if seed.to_string().len() < 5{
         println!("{}","Critical, extremely short seed detected. Please input a longer string to make the encryption process more secure.".red());
     }
-
+    // Encrypt the base by swapping letters acording to the seed
     let mut base_encrypted = base.clone();
     let seed_sum = sum_number(seed);
     for i in 0..seed_sum{
@@ -28,6 +29,7 @@ pub fn encrypt(value: &str, seed: usize) -> String{
             base_encrypted.swap(curr_num, wrap_number(0, base.len() - 1, num_to_get));
         };
     };
+    // Encrypt the value based on the new encrypted alphabet and shift letters based on the seed
     let mut encrypted_value: String = String::new();
     for (i,c) in value.chars().enumerate(){
         let mut location_letter = base_encrypted.iter().position(|x| x == &c).unwrap();
@@ -37,6 +39,7 @@ pub fn encrypt(value: &str, seed: usize) -> String{
     }
     encrypted_value
 }
+// Add all the numbers in the number together, e.g. 123 -> 1+2+3 = 6
 fn sum_number(number: usize) -> usize{
     let mut sum: usize = 0;
     for i in number.to_string().chars(){
@@ -45,6 +48,7 @@ fn sum_number(number: usize) -> usize{
     }
     sum
 }
+// Wrap the number base on the given min and max, e.g. min: 3, max: 10, number: 12 -> 5
 fn wrap_number(min: usize, max: usize, number: usize) -> usize{
     if number > max{
         let nrange = max - min + 1;
