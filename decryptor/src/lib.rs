@@ -1,4 +1,5 @@
 pub fn decrypt(value: &str, seed: usize) -> String{
+    // Base is the alphabet the user can use in their message
     let base: Vec<char> = vec![
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
     'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 
@@ -9,6 +10,7 @@ pub fn decrypt(value: &str, seed: usize) -> String{
 
     let mut base_encrypted = base.clone();
     let seed_sum = sum_number(seed);
+    // Encrypts the base vector by swapping the position of char's in the base by using the seed
     for i in 0..seed_sum{
         for c in &base{
             let curr_num = base.iter().position(|x| x == c).unwrap();
@@ -17,6 +19,7 @@ pub fn decrypt(value: &str, seed: usize) -> String{
             base_encrypted.swap(curr_num, wrap_number(0, base.len() - 1, num_to_get as isize));
         };
     };
+    // Uses the new encyrpted base to change out the letters and change their position by using the seed
     let mut decrypted_value: String = String::new();
     for (i,c) in value.chars().enumerate(){
         let mut location_letter = base_encrypted.iter().position(|x| x == &c).unwrap();
@@ -26,6 +29,7 @@ pub fn decrypt(value: &str, seed: usize) -> String{
     }
     decrypted_value
 }
+// Adds all of the numbers in a number together, e.g. 123 -> 1+2+3 = 6
 fn sum_number(number: usize) -> usize{
     let mut sum: usize = 0;
     for i in number.to_string().chars(){
@@ -34,6 +38,7 @@ fn sum_number(number: usize) -> usize{
     }
     sum
 }
+// Wraps the given number within the range, e.g. min: 3, max: 10, number: 12 -> 5
 fn wrap_number(min: usize, max: usize, number: isize) -> usize{
     let nrange = max - min + 1;
     if number > max as isize{

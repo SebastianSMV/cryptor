@@ -2,6 +2,7 @@ use encryptor;
 use decryptor;
 
 fn main() {
+    // Example encryption
     let input: String = String::from("Simple encryption program!");
     let seed: usize = 123456789;
     let enc = encryptor::encrypt(&input, seed);
